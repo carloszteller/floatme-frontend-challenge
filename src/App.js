@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
+import { Container } from '@material-ui/core';
+import Pokemon from './components/Pokemon';
 
-function App() {
+export default function App() {
+  const [pokemonURL, setPokemonURL] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    axios.get(' https://pokeapi.co/api/v2/pokemon/')
+      .then(res => {
+        setPokemonURL(res.data.results.map(p => p.url));
+      });
+
+    setIsLoading(false);
+  }, []);
+
+  if(isLoading) {
+    return (
+      <img src={process.env.PUBLIC_URL + '/img/pokeball.gif'} alt="Pokeball loader" />
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {pokemonURL && pokemonURL.map((p, i) => (
+        <Pokemon pokemonURL={p} key={i} />
+      ))}
     </div>
-  );
+  )
 }
-
-export default App;
