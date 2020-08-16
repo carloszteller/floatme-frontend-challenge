@@ -4,18 +4,20 @@ import { Container } from '@material-ui/core';
 import Pokemon from './components/Pokemon';
 
 export default function App() {
-  const [pokemonURL, setPokemonURL] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [pokemon, setPokemon] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
+    setLoading(true);
 
-    axios.get(' https://pokeapi.co/api/v2/pokemon/')
+    axios.get('https://pokeapi.co/api/v2/pokemon/')
       .then(res => {
-        setPokemonURL(res.data.results.map(p => p.url));
+        return axios.all(res.data.results.map(p => axios.get(p.url)));
+      })
+      .then(res => {
+        setPokemon(res.map(p => p.data));
+        setLoading(false);
       });
-
-    setIsLoading(false);
   }, []);
 
   if(isLoading) {
@@ -26,9 +28,7 @@ export default function App() {
 
   return (
     <div>
-      {pokemonURL && pokemonURL.map((p, i) => (
-        <Pokemon pokemonURL={p} key={i} />
-      ))}
+      <Pokemon pokemon={pokemon} />
     </div>
-  )
+  );
 }
