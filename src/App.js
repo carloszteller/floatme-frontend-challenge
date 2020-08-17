@@ -5,6 +5,7 @@ import Pokemon from './components/Pokemon';
 
 export default function App() {
   const [pokemon, setPokemon] = useState([]);
+  const [pokemonSprites, setPokemonSprites] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,6 +17,10 @@ export default function App() {
       })
       .then(res => {
         setPokemon(res.map(p => p.data));
+        
+        return axios.all(res.map(s => axios.get(s.data.varieties[0].pokemon.url)));
+      }).then(res => {
+        setPokemonSprites(res.map(s => s.data.sprites.front_default));
         setLoading(false);
       });
   }, []);
@@ -28,7 +33,7 @@ export default function App() {
 
   return (
     <div>
-      <Pokemon pokemon={pokemon} />
+      <Pokemon pokemon={pokemon} sprite={pokemonSprites} />
     </div>
   );
 }
