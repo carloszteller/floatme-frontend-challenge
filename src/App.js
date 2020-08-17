@@ -10,7 +10,7 @@ export default function App() {
   useEffect(() => {
     setLoading(true);
 
-    axios.get('https://pokeapi.co/api/v2/pokemon/')
+    axios.get('https://pokeapi.co/api/v2/pokemon-species?limit=151')
       .then(res => {
         return axios.all(res.data.results.map(p => axios.get(p.url)));
       })
