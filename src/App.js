@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Container } from '@material-ui/core';
+import { Container, Backdrop } from '@material-ui/core';
 import Search from './components/Search';
 import Pokemon from './components/Pokemon';
 
 export default function App() {
   const [pokemon, setPokemon] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setLoading] = useState(true);
 
-  let species = [];
-  let stats = [];
+  const searchOnChange = e => {
+    setSearchTerm(e.target.value);
+  }
 
   useEffect(() => {
     setLoading(true);
+
+    let species = [];
+    let stats = [];
 
     axios.get('https://pokeapi.co/api/v2/pokemon-species?limit=151')
       .then(res => {
@@ -30,17 +35,17 @@ export default function App() {
       });
   }, []);
 
-  console.log(pokemon);
-
   if(isLoading) {
     return (
-      <img src={process.env.PUBLIC_URL + '/img/pokeball.gif'} alt="Pokeball loader" />
+      <Backdrop open={true}>
+        <img src={process.env.PUBLIC_URL + '/img/pokeball.gif'} alt="Pokeball loader" />
+      </Backdrop>
     );
   }
 
   return (
     <Container>
-      <Search />
+      <Search search={searchOnChange} term={searchTerm} />
       <Pokemon pokemon={pokemon} />
     </Container>
   );
