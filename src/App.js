@@ -7,14 +7,18 @@ import Pokemon from './components/Pokemon';
 export default function App() {
   const [pokemon, setPokemon] = useState();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState([]);
+  const [favorite, setFavorite] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const searchOnChange = e => {
+  const onSearchChange = e => {
     setSearchTerm(e.target.value);
+    setSearchResults(pokemon.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())));
+    setPokemon(searchResults);
   }
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
 
     let species = [];
     let stats = [];
@@ -31,8 +35,10 @@ export default function App() {
         stats = res.map(p => p.data);
 
         setPokemon(species.map((p, i) => Object.assign({}, p, stats[i])));
-        setLoading(false);
+        setIsLoading(false);
       });
+
+    // setFavorite(favorite => [...favorite, 'charmander']);
   }, []);
 
   if(isLoading) {
@@ -45,7 +51,7 @@ export default function App() {
 
   return (
     <Container>
-      <Search search={searchOnChange} term={searchTerm} />
+      <Search change={onSearchChange} term={searchTerm} />
       <Pokemon pokemon={pokemon} />
     </Container>
   );
