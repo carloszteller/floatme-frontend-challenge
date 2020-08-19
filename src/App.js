@@ -5,7 +5,7 @@ import Search from './components/Search';
 import Pokemon from './components/Pokemon';
 
 export default function App() {
-  const [pokemon, setPokemon] = useState();
+  const [pokemon, setPokemon] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [favorite, setFavorite] = useState([]);
@@ -15,30 +15,24 @@ export default function App() {
     let species = [];
     let stats = [];
 
-    axios.get('https://pokeapi.co/api/v2/pokemon-species?limit=151')
+    axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
       .then(res => {
         return axios.all(res.data.results.map(p => axios.get(p.url)));
       })
       .then(res => {
-        species = res.map(p => p.data);
-        
-        return axios.all(res.map(s => axios.get(s.data.varieties[0].pokemon.url)));
-      }).then(res => {
         stats = res.map(p => p.data);
+      
+        return axios.all(res.map(s => axios.get(s.data.species.url)));
+      }).then(res => {
+        species = res.map(p => p.data);
 
-        setPokemon(species.map((p, i) => Object.assign({}, p, stats[i])));
+        setPokemon(stats.map((p, i) => Object.assign({}, p, species[i])));
         setIsLoading(false);
       });
   }
 
   const onSearchChange = e => {
     setSearchTerm(e.target.value);
-  }
-
-  const searchPokemon = () => {
-    setSearchResults(pokemon.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())));
-    setPokemon(searchResults);
-    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -50,11 +44,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-
     if(searchTerm) {
-      searchPokemon();
+      setSearchResults(pokemon.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())));
+      setPokemon(searchResults);
     } else {
+      setIsLoading(true);
       fetchPokemon();
     }
   }, [searchTerm]);
