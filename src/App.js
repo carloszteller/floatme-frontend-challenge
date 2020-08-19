@@ -4,14 +4,21 @@ import { Container, Backdrop } from '@material-ui/core';
 import Search from './components/Search';
 import Pokemon from './components/Pokemon';
 
+import './App.css';
+
 export default function App() {
   const [pokemon, setPokemon] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const [favorite, setFavorite] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchPokemon = () => {
+  const onSearchChange = e => {
+    setSearchTerm(e.target.value);
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+
     let species = [];
     let stats = [];
 
@@ -29,29 +36,9 @@ export default function App() {
         setPokemon(stats.map((p, i) => Object.assign({}, p, species[i])));
         setIsLoading(false);
       });
-  }
-
-  const onSearchChange = e => {
-    setSearchTerm(e.target.value);
-  }
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    fetchPokemon();
 
     // setFavorite(favorite => [...favorite, 'charmander']);
   }, []);
-
-  useEffect(() => {
-    if(searchTerm) {
-      setSearchResults(pokemon.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())));
-      setPokemon(searchResults);
-    } else {
-      setIsLoading(true);
-      fetchPokemon();
-    }
-  }, [searchTerm]);
 
   if(isLoading) {
     return (
@@ -64,7 +51,7 @@ export default function App() {
   return (
     <Container>
       <Search change={onSearchChange} term={searchTerm} />
-      <Pokemon pokemon={pokemon} />
+      <Pokemon pokemon={pokemon} search={searchTerm} />
     </Container>
   );
 }
