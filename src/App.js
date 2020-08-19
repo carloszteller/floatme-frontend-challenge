@@ -11,15 +11,7 @@ export default function App() {
   const [favorite, setFavorite] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const onSearchChange = e => {
-    setSearchTerm(e.target.value);
-    setSearchResults(pokemon.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())));
-    setPokemon(searchResults);
-  }
-
-  useEffect(() => {
-    setIsLoading(true);
-
+  const fetchPokemon = () => {
     let species = [];
     let stats = [];
 
@@ -37,9 +29,35 @@ export default function App() {
         setPokemon(species.map((p, i) => Object.assign({}, p, stats[i])));
         setIsLoading(false);
       });
+  }
+
+  const onSearchChange = e => {
+    setSearchTerm(e.target.value);
+  }
+
+  const searchPokemon = () => {
+    setSearchResults(pokemon.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())));
+    setPokemon(searchResults);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetchPokemon();
 
     // setFavorite(favorite => [...favorite, 'charmander']);
   }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    if(searchTerm) {
+      searchPokemon();
+    } else {
+      fetchPokemon();
+    }
+  }, [searchTerm]);
 
   if(isLoading) {
     return (
