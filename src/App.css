@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,12 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+body { background-color: #e3350d; }
+
+.search {
+  background-color: white;
+  border-radius: 5px;
+  overflow: hidden;
 }
