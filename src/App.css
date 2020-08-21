@@ -39,7 +39,14 @@
 
 body { background-color: #e3350d; }
 
-.capitalize { text-transform: capitalize; }
+.my-2em { margin: 2em 0 !important; }
+.capitalize { text-transform: capitalize !important; }
+
+.header {
+  padding-top: 1em;
+  color: white;
+  text-align: center;
+}
 
 .search {
   background-color: white;
@@ -71,3 +78,8 @@ body { background-color: #e3350d; }
 .rock { background-color: #a38c21; }
 .steel { background-color: #9eb7b8; }
 .water { background-color: #4592c4; }
+
+.modal-buttons {
+  position: absolute;
+  top: 0; right: 0;
+}

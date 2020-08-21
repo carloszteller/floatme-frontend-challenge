@@ -4,7 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 export default function Search({change, term}) {
     return (
-        <FormControl className="search" style={{ margin: "2em 0" }} fullWidth={true}>
+        <FormControl className="search my-2em" fullWidth={true}>
              <Input
                 id="search-pokemon"
                 placeholder="Search Pokemon"
