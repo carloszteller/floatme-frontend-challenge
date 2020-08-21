@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/floatme-frontend-challenge/precache-manifest.1c8e1f0f9a0ee8bb6f7876f54f68b3b2.js"
+  "/floatme-frontend-challenge/precache-manifest.0bbf6b59a8739a1c67832dc8dbda8186.js"
 );
 
 self.addEventListener('message', (event) => {
