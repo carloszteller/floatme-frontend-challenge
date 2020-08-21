@@ -17,7 +17,12 @@ export default function App() {
   }
 
   const onSetFavorite = favoritePokemon => {
-    setFavorites(favorites => [...favorites, favoritePokemon]);
+    if(favorites.includes(favoritePokemon)) {
+      favorites.splice(favorites.indexOf(favoritePokemon), 1);
+      setFavorites([...favorites]);
+    } else {
+      setFavorites(favorites => [...favorites, favoritePokemon]);
+    }
   }
 
   useEffect(() => {
