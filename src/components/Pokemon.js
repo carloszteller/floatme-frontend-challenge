@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { Grid, Card, CardContent, Typography, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton, Slide  } from '@material-ui/core';
 import { Close, Favorite, FavoriteBorder } from '@material-ui/icons';
+
+const modalTransition = forwardRef(function modalTransition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function Pokemon({pokemon, search, favorites, setFavorite}) {
     const [selectedPokemon, setSelectefPokemon] = useState();
@@ -20,11 +24,11 @@ export default function Pokemon({pokemon, search, favorites, setFavorite}) {
         <Grid container spacing={3}>
             {pokemon && pokemon.filter(p => p.name.toLowerCase().includes(search.toLowerCase())).map(p => (
                 <Grid item key={p.id} xs={12} sm={6} md={3}>
-                    <Card onClick={() => openModal(p.id)}>
+                    <Card onClick={() => openModal(p.id)} align="center">
                         <CardContent className="pokemon-card">
                             <img src={p.sprites.front_default} alt={p.name} />
-                            <p>{`No. ${p.id}`}</p>
-                            <p className="capitalize">{p.name}</p>
+                            <Typography>{`No. ${p.id}`}</Typography>
+                            <Typography component="h2" variant="h5" className="capitalize my-25">{p.name}</Typography>
                             <Grid container justify="center" spacing={2}>
                                 {p.types && p.types.map(t => (
                                     <Grid item xs={4} md={6} key={t.slot}>
@@ -37,6 +41,7 @@ export default function Pokemon({pokemon, search, favorites, setFavorite}) {
 
                     <Dialog
                         open={selectedPokemon === p.id}
+                        TransitionComponent={modalTransition}
                         onClose={closeModal}
                     >
                         <DialogTitle className="capitalize">

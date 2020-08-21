@@ -39,7 +39,8 @@
 
 body { background-color: #e3350d; }
 
-.my-2em { margin: 2em 0 !important; }
+.my-25 { margin: .25em 0 !important; }
+.my-15 { margin: 1.5em 0 !important; }
 .capitalize { text-transform: capitalize !important; }
 
 .header {
