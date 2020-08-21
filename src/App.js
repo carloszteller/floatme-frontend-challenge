@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Container, Typography, Backdrop } from '@material-ui/core';
+import { Container, Typography, Grid, Backdrop } from '@material-ui/core';
 import Search from './components/Search';
 import Pokemon from './components/Pokemon';
+import FilterFavorites from './components/FilterFavorites'
 
 import './App.css';
 
@@ -11,6 +12,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [toggle, setToggle] = useState('pokemon');
 
   const onSearchChange = e => {
     setSearchTerm(e.target.value);
@@ -22,6 +24,14 @@ export default function App() {
       setFavorites([...favorites]);
     } else {
       setFavorites(favorites => [...favorites, favoritePokemon]);
+    }
+  }
+
+  const onFilterFavorites = () => {
+    if(toggle === 'pokemon') {
+      setToggle('favorites');
+    } else {
+      setToggle('pokemon');
     }
   }
 
@@ -47,7 +57,7 @@ export default function App() {
       });
   }, []);
 
-  console.log(pokemon);
+  console.log(toggle);
 
   if(isLoading) {
     return (
@@ -60,8 +70,17 @@ export default function App() {
   return (
     <Container>
       <Typography component="h1" variant="h3" className="header">Kanto Pokédex</Typography>
-      <Search change={onSearchChange} term={searchTerm} />
-      <Pokemon pokemon={pokemon} search={searchTerm} favorites={favorites} setFavorite={onSetFavorite} />
+
+      <Grid container justify="center" alignItems="center" spacing={2}>
+        <Grid item xs={12} sm={8}>
+          <Search change={onSearchChange} term={searchTerm} />
+        </Grid>
+        <Grid item>
+          <FilterFavorites filter={onFilterFavorites} toggle={toggle} />
+        </Grid>
+      </Grid>
+
+      <Pokemon pokemon={toggle === 'pokemon' ? pokemon : favorites} search={searchTerm} favorites={favorites} setFavorite={onSetFavorite} />
     </Container>
   );
 }

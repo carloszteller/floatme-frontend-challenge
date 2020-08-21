@@ -40,8 +40,10 @@
 body { background-color: #e3350d; }
 
 .my-25 { margin: .25em 0 !important; }
+.my-50 { margin: .5em 0 !important; }
 .my-15 { margin: 1.5em 0 !important; }
 .capitalize { text-transform: capitalize !important; }
+.uppercase { text-transform: uppercase !important; }
 
 .header {
   padding-top: 1em;
