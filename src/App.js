@@ -40,6 +40,8 @@ export default function App() {
     // setFavorite(favorite => [...favorite, 'charmander']);
   }, []);
 
+  console.log(pokemon);
+
   if(isLoading) {
     return (
       <Backdrop open={true}>

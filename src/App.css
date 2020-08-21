@@ -39,11 +39,15 @@
 
 body { background-color: #e3350d; }
 
+.capitalize { text-transform: capitalize; }
+
 .search {
   background-color: white;
   border-radius: 5px;
   overflow: hidden;
 }
+
+.pokemon-card:hover { cursor: pointer; }
 
 .type {
   padding: 5px;
